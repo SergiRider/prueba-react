@@ -19,7 +19,9 @@ const Buscador = ({poke, setSearch}) => {
   return (
     <Form inline>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Nombre</Form.Label>
+        <Form.Label>
+          <h1>Generaciones de Pokemon</h1>
+          </Form.Label>
         <Form.Control type="text" placeholder="Nombre pokemon" onChange={searching} />
       </Form.Group>
       {/* <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
