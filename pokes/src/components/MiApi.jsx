@@ -8,19 +8,21 @@ import Table from 'react-bootstrap/Table';
 
 const MiApi = ({poke, setPoke, search, setSearch}) => {
       const [listPoke, setListPoke]=useState(poke)
+
   
+      const url1='https://pokeapi.co/api/v2/pokemon?limit=151'
+    
     useEffect(()=>{
         const getPokes= async ()=>{
-        const response= await fetch('https://pokeapi.co/api/v2/pokemon?limit=249&offset=2')
+        const response= await fetch(url1)
         const dataPokes= await response.json()
-       
         const {results} =dataPokes
 
+             const pokesPush =results.map(async(pokemon)=>{
+          const response = await fetch(pokemon.url)
+          const poke= await response.json()    
+          const types= poke.types.map(type=>type.type.name).join(', ')  
 
-        const pokesPush =results.map(async(pokemon)=>{
-            const response = await fetch(pokemon.url)
-            const poke= await response.json()
-            
             return{
                 id: poke.id,
                 name:poke.name,
@@ -30,42 +32,25 @@ const MiApi = ({poke, setPoke, search, setSearch}) => {
                 imgG4: poke.sprites.versions["generation-iv"].platinum.front_default,
                 imgG5: poke.sprites.versions["generation-v"]["black-white"].animated.front_default,
                 imgG6: poke.sprites.versions["generation-vi"]["omegaruby-alphasapphire"].front_default,
-                type1: poke.types[0].type.name,
-                               
+                type: types,            
             }
         })
+        
         setPoke(await Promise.all(pokesPush))
         setSearch(await Promise.all(pokesPush))
         }
         getPokes()
     },[])
-
-
-
-
+    
   return (
     <>
-    <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>ID</th>
-            <th>Generacion 1</th>
-            <th>Generacion 2</th>
-            <th>Generacion 3</th>
-            <th>Generacion 4</th>
-            <th>Generacion 5</th>
-            <th>Generacion 6</th>
-            
-
-          </tr>
-        </thead>
+    
         <tbody>
             {search.map((poke) =>(
                 <tr className="aligne-middle" key={poke.id}>
-                    
-                    <td>{poke.name}</td>
                     <td>{poke.id}</td>
+                    <td>{poke.name}</td>
+                    <td>{poke.type}</td>
                     <td><img src={poke.imgG1}></img></td>
                     <td><img src={poke.imgG2}></img></td>
                     <td><img src={poke.imgG3}></img></td>
@@ -76,7 +61,7 @@ const MiApi = ({poke, setPoke, search, setSearch}) => {
                 </tr>
             ))}
         </tbody>
-      </Table>
+      
     
     
     </>
