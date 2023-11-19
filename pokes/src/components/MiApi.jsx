@@ -1,20 +1,12 @@
 import { useEffect } from 'react';
-import { useState } from 'react';
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Card from "react-bootstrap/Card";
-import Table from 'react-bootstrap/Table';
 
-const MiApi = ({poke, setPoke, search, setSearch}) => {
-      const [listPoke, setListPoke]=useState(poke)
-
-  
-      const url1='https://pokeapi.co/api/v2/pokemon?limit=151'
+const MiApi = ({setPoke, search, setSearch}) => {
+    
+      const url='https://pokeapi.co/api/v2/pokemon?limit=251'
     
     useEffect(()=>{
         const getPokes= async ()=>{
-        const response= await fetch(url1)
+        const response= await fetch(url)
         const dataPokes= await response.json()
         const {results} =dataPokes
 
@@ -42,9 +34,9 @@ const MiApi = ({poke, setPoke, search, setSearch}) => {
         getPokes()
     },[])
     
+    
   return (
     <>
-    
         <tbody>
             {search.map((poke) =>(
                 <tr className="aligne-middle" key={poke.id}>
@@ -57,16 +49,11 @@ const MiApi = ({poke, setPoke, search, setSearch}) => {
                     <td><img src={poke.imgG4}></img></td>
                     <td><img src={poke.imgG5}></img></td>
                     <td><img src={poke.imgG6}></img></td>
-
                 </tr>
             ))}
-        </tbody>
-      
-    
-    
+        </tbody>    
     </>
   )
-
   }
 
 export default MiApi
